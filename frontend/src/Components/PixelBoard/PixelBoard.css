@@ -1,0 +1,12 @@
+.pixel-row{
+    display: flex;
+}
+
+.pixel-board{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90vw;
+    justify-content: center;
+    overflow: auto;
+}

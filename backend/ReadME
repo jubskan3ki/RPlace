@@ -1,0 +1,122 @@
+# Documentation du Backend - Plateforme Pixel
+
+## 1. Introduction
+Cette documentation fournit des informations sur les endpoints de notre API pour la gestion des pixels.
+
+## 2. Configuration
+Avant de commencer, assurez-vous d'avoir les variables d'environnement correctement configurées dans votre fichier `.env`.
+```
+JWT_SECRET_KEY: La clé secrète pour JWT.
+```
+
+## 3. Routes Pixels
+
+### 3.1 Pixels
+
+**POST /pixels**
+- **Description :** Pose un pixel sur le tableau.
+- **Paramètres du corps :**
+  - `x`: Coordonnée X du pixel.
+  - `y`: Coordonnée Y du pixel.
+  - `color`: Couleur du pixel.
+  - `username` (optionnel): Nom d'utilisateur. Par défaut "Anonyme".
+- **Réponse :**
+  - 201 : Le pixel a été placé avec succès.
+  - 500 : Erreur serveur.
+
+**GET /pixels**
+- **Description :** Récupère tous les pixels.
+- **Réponse :**
+  - 200 : Retourne la liste de tous les pixels.
+  - 500 : Erreur serveur.
+
+### 3.2 Bonus
+
+**POST /bonus/color-grenade**
+- **Description :** Place plusieurs pixels autour d'une coordonnée centrale.
+- **Paramètres du corps :**
+  - `x`: Coordonnée X centrale.
+  - `y`: Coordonnée Y centrale.
+  - `color`: Couleur des pixels.
+  - `username` (optionnel): Nom d'utilisateur.
+- **Réponse :**
+  - 201 : Les pixels ont été placés avec succès.
+  - 400 : Aucun pixel valide à insérer.
+  - 500 : Erreur serveur.
+
+**POST /bonus/line**
+- **Description :** Place une ligne de pixels.
+- **Paramètres du corps :**
+  - `startX`, `startY`: Coordonnées de départ de la ligne.
+  - `endX`, `endY`: Coordonnées de fin de la ligne.
+  - `color`: Couleur des pixels.
+  - `username` (optionnel): Nom d'utilisateur.
+- **Réponse :**
+  - 201 : Les pixels ont été placés avec succès.
+  - 400 : Aucun pixel valide à insérer.
+  - 500 : Erreur serveur.
+
+## 4. API Utilisateur
+
+### 4.1 Récupérer les informations d'un utilisateur
+
+**GET /users/:id**
+- **Description :** Récupère les détails d'un utilisateur spécifié par `id`.
+- **Headers :**
+  - `Authorization`: Token JWT de l'utilisateur authentifié.
+- **Paramètres de l'URL :**
+  - `id`: ID de l'utilisateur à récupérer.
+- **Réponse :**
+  - 200 : Retourne les détails de l'utilisateur.
+  - 401 : Non autorisé.
+  - 500 : Erreur serveur.
+
+### 4.2 Mettre à jour un utilisateur
+
+**PUT /users/:id**
+- **Description :** Met à jour les détails d'un utilisateur spécifié par `id`.
+- **Headers :**
+  - `Authorization`: Token JWT de l'utilisateur authentifié.
+- **Paramètres de l'URL :**
+  - `id`: ID de l'utilisateur à mettre à jour.
+- **Paramètres du corps :**
+  - Champs de l'utilisateur à mettre à jour (par exemple, `email`, `password`, etc.)
+- **Réponse :**
+  - 200 : L'utilisateur a été mis à jour avec succès.
+  - 401 : Non autorisé.
+  - 500 : Erreur serveur.
+
+## 5. API Authentification
+
+### 5.1 Inscription
+
+**POST /signup**
+- **Description :** Inscrit un nouvel utilisateur.
+- **Paramètres du corps :**
+  - `username`: Nom d'utilisateur.
+  - `email`: Adresse email.
+  - `password`: Mot de passe (au moins 6 caractères).
+- **Réponse :**
+  - 201 : L'utilisateur a été créé avec succès.
+  - 400 : Erreur de validation (par exemple, email non valide, mot de passe trop court, etc.).
+  - 500 : Erreur serveur.
+
+### 5.2 Connexion
+
+**POST /login**
+- **Description :** Authentifie un utilisateur existant.
+- **Paramètres du corps :**
+  - `username`: Nom d'utilisateur.
+  - `password`: Mot de passe (au moins 6 caractères).
+- **Réponse :**
+  - 200 : Retourne un token JWT pour l'utilisateur authentifié.
+  - 400 : Erreur de validation (par exemple, nom d'utilisateur ou mot de passe incorrect).
+  - 500 : Erreur serveur.
+
+## 6. Erreurs courantes
+
+- **Erreur lors de la connexion:** Assurez-vous que votre clé
+
+ secrète JWT est correctement définie dans votre fichier `.env`.
+- **Nom d'utilisateur ou mot de passe incorrect:** Les informations d'identification fournies sont incorrectes.
+- **Votre compte n'est pas encore vérifié:** L'utilisateur doit vérifier son compte avant de se connecter.
