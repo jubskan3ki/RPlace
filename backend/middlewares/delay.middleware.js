@@ -18,7 +18,7 @@ const checkPixelDelay = async (req, res, next) => {
             const now = Date.now();
             const timeSinceLastPixel = now - lastPixel.timestamp;
 
-            // Si l'utilisateur n'a pas attendu assez longtemps, terminer la requête avec un message d'erreur
+            // Si l'utilisateur n'a pas attendu assez longtemps, renvoyer une erreur avec le temps restant
             if (timeSinceLastPixel < delay) {
                 const timeLeft = delay - timeSinceLastPixel;
                 return res.status(429).json({

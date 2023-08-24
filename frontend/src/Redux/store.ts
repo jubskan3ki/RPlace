@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import bonusReducer from './bonus.slice';
-import colorReducer from './color.slice'; // Assurez-vous que le chemin est correct.
+import colorReducer from './color.slice';
+import timeReducer from './time.slice';
 
 const store = configureStore({
   reducer: {
     bonus: bonusReducer,
     color: colorReducer,
+    time: timeReducer,
   },
 })
 
