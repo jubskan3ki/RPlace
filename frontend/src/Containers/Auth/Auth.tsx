@@ -55,7 +55,7 @@ const Auth: React.FC = () => {
                 type: 'error',
                 message: "Une erreur s'est produite lors de l'authentification"
             });
-            console.error('Erreur d\'authentification:', error);
+            console.error(error);
         }
     };
 

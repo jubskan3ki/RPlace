@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
+// import axios from 'axios';
 import io from 'socket.io-client';
 import { RootState } from '../../Redux/store';
 import { timeSend } from '../../Redux/time.slice';
@@ -21,6 +21,8 @@ interface Pixel {
 }
 
 const Home: React.FC = () => {
+    const isMounted = React.useRef(false); 
+
     const [data, setData] = useState<Pixel[]>([]);
     const notification = useSelector((state: RootState) => state.time.value);
     const dispatch = useDispatch();
@@ -28,28 +30,36 @@ const Home: React.FC = () => {
     const closeNotification = () => {
         dispatch(timeSend(0));
     };
+    // const apiUrl = 'http://localhost:5000/api/pixels';
 
     useEffect(() => {
-        const apiUrl = 'http://localhost:5000/api/pixels';
-        const token = localStorage.getItem('authToken');
 
-        axios.get(apiUrl, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(response => {
-            setData(response.data);
-        })
-        .catch(error => {
-            console.error("Il y a eu une erreur lors de la récupération des données", error);
+        if (isMounted.current) return
+        // const token = localStorage.getItem('authToken');
+
+        // axios.get(apiUrl, {
+        //     headers: {
+        //         'Authorization': `Bearer ${token}`
+        //     }
+        // })
+        // .then(response => {
+        //     setData(response.data);
+        // })
+        // .catch(error => {
+        //     console.error("Il y a eu une erreur lors de la récupération des données", error);
+        // });
+
+        const socket = io('http://localhost:5000'); 
+
+        socket.on('connect', () => {
+            console.log('Socket connected');
         });
-
-        const socket = io('http://localhost:5000/api/pixels'); // Replace with your backend URL
 
         socket.on('pixels', (updatedPixels: Pixel[]) => {
             setData(updatedPixels);
         });
+
+        isMounted.current = true;
 
         return () => {
             socket.disconnect();

@@ -13,8 +13,7 @@ const server = http.createServer(app);
 
 const io = socketIo(server, {
     cors: {
-        origin: "http://localhost:5173", // Replace with your frontend URL
-        methods: ["GET", "POST"]
+        origin: "http://localhost:5173"
     }
 });
 
@@ -22,7 +21,6 @@ connectDB();
 
 app.use(express.json());
 
-// Utilisez le middleware cors pour configurer les en-têtes CORS
 app.use(cors());
 
 // Routes
